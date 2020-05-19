@@ -10,6 +10,7 @@ type Node struct {
 }
 
 type LRUCache struct {
+	Len   int
 	Cap   int
 	Head  *Node
 	Tail  *Node
@@ -35,6 +36,8 @@ func (this *LRUCache) add(node *Node) {
 
 	this.Head.Next.Pre = node
 	this.Head.Next = node
+
+	this.Len++
 }
 
 func (this *LRUCache) remove(node *Node) {
@@ -43,6 +46,8 @@ func (this *LRUCache) remove(node *Node) {
 
 	next.Pre = pre
 	pre.Next = next
+
+	this.Len--
 }
 
 func (this *LRUCache) move(node *Node) {
@@ -62,7 +67,7 @@ func (this *LRUCache) Get(key int) int {
 func (this *LRUCache) Put(key int, value int) {
 	node, ok := this.nodes[key]
 	if !ok {
-		if len(this.nodes) == this.Cap {
+		if this.Len == this.Cap {
 			delete(this.nodes, this.Tail.Pre.Key)
 			this.remove(this.Tail.Pre)
 		}
