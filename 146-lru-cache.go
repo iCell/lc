@@ -2,57 +2,56 @@ package main
 
 import "fmt"
 
-type Node struct {
+type CacheNode struct {
 	Key   int
 	Value int
-	Pre   *Node
-	Next  *Node
+	Pre   *CacheNode
+	Next  *CacheNode
 }
 
 type LRUCache struct {
 	Len   int
 	Cap   int
-	Head  *Node
-	Tail  *Node
-	nodes map[int]*Node
+	Head  *CacheNode
+	Tail  *CacheNode
+	nodes map[int]*CacheNode
 }
 
 func Constructor(capacity int) LRUCache {
-	head := &Node{}
-	tail := &Node{}
+	head := &CacheNode{}
+	tail := &CacheNode{}
 	head.Next = tail
 	tail.Pre = head
 	return LRUCache{
 		Cap:   capacity,
 		Head:  head,
 		Tail:  tail,
-		nodes: make(map[int]*Node, capacity),
+		nodes: make(map[int]*CacheNode, capacity),
 	}
 }
 
-func (this *LRUCache) add(node *Node) {
-	node.Next = this.Head.Next
-	node.Pre = this.Head
-
-	this.Head.Next.Pre = node
-	this.Head.Next = node
-
+func (this *LRUCache) append(node *CacheNode) {
 	this.Len++
+
+	this.Tail.Pre.Next = node
+	node.Pre = this.Tail.Pre
+
+	node.Next = this.Tail
+	this.Tail.Pre = node
 }
 
-func (this *LRUCache) remove(node *Node) {
+func (this *LRUCache) remove(node *CacheNode) {
+	this.Len--
+
 	pre := node.Pre
 	next := node.Next
-
-	next.Pre = pre
 	pre.Next = next
-
-	this.Len--
+	next.Pre = pre
 }
 
-func (this *LRUCache) move(node *Node) {
+func (this *LRUCache) move(node *CacheNode) {
 	this.remove(node)
-	this.add(node)
+	this.append(node)
 }
 
 func (this *LRUCache) Get(key int) int {
@@ -66,20 +65,24 @@ func (this *LRUCache) Get(key int) int {
 
 func (this *LRUCache) Put(key int, value int) {
 	node, ok := this.nodes[key]
-	if !ok {
-		if this.Len == this.Cap {
-			delete(this.nodes, this.Tail.Pre.Key)
-			this.remove(this.Tail.Pre)
-		}
-		newNode := &Node{Key: key, Value: value}
-		this.add(newNode)
-		this.nodes[key] = newNode
+	if ok {
+		node.Value = value
+		this.move(node)
 		return
 	}
 
-	node.Value = value
+	if this.Len >= this.Cap {
+		toRemove := this.Head.Next
+		this.remove(toRemove)
+		delete(this.nodes, toRemove.Key)
+	}
+
+	node = &CacheNode{
+		Key:   key,
+		Value: value,
+	}
 	this.nodes[key] = node
-	this.move(node)
+	this.append(node)
 }
 
 func (this *LRUCache) Print() {
