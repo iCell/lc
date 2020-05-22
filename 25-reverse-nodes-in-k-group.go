@@ -37,6 +37,24 @@ func reverseKGroup(head *ListNode, k int) *ListNode {
 	}
 	dummy := &ListNode{Next: head}
 
+	node := dummy
+	left := dummy
+	index := 0
+
+	for {
+		if node == nil {
+			break
+		}
+
+		if index != 0 && index%k == 0 {
+			left = reverseBetweenNodes(left, node.Next)
+			node = left.Next
+		} else {
+			node = node.Next
+		}
+		index++
+	}
+
 	return dummy.Next
 }
 
@@ -47,8 +65,8 @@ func reverseBetweenNodes(left *ListNode, right *ListNode) *ListNode {
 	for {
 		if cur == right {
 			left.Next = pre
-			first.Next = cur
-			return pre
+			first.Next = right
+			return first
 		}
 		next = cur.Next
 		cur.Next = pre
