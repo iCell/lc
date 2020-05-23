@@ -1,24 +1,23 @@
 package main
 
 func hasCycle(head *ListNode) bool {
-	if head == nil {
+	if head == nil || head.Next == nil {
 		return false
 	}
-
-	cur := head
-	jum := head
+	var (
+		slow = head
+		fast = head.Next.Next
+	)
 
 	for {
-		cur = cur.Next
-		if jum.Next == nil {
+		if fast == nil || fast.Next == nil {
 			return false
 		}
-		jum = jum.Next.Next
 
-		if jum == nil {
-			return false
-		}
-		if cur.Val == jum.Val {
+		slow = slow.Next
+		fast = fast.Next.Next
+
+		if slow == fast {
 			return true
 		}
 	}
