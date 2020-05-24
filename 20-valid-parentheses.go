@@ -43,7 +43,7 @@ var left = string([]rune{left1, left2, left3})
 var right = string([]rune{right1, right2, right3})
 
 func isValid(s string) bool {
-	if len(s) <= 1 {
+	if len(s) == 1 {
 		return false
 	}
 
@@ -64,5 +64,5 @@ func isValid(s string) bool {
 			}
 		}
 	}
-	return true
+	return len(st.values) == 0
 }
