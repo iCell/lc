@@ -17,6 +17,10 @@ func NewStack() *Stack {
 	return &Stack{}
 }
 
+func (s *Stack) isEmpty() bool {
+	return len(s.values) == 0
+}
+
 func (s *Stack) push(v rune) {
 	s.values = append(s.values, v)
 }
@@ -64,5 +68,5 @@ func isValid(s string) bool {
 			}
 		}
 	}
-	return len(st.values) == 0
+	return st.isEmpty()
 }
