@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func main() {
 	fmt.Println(topKFrequent([]int{1, 1, 1, 2, 2, 3}, 2))
@@ -16,49 +18,41 @@ type Heap struct {
 }
 
 func New() *Heap {
-	return &Heap{}
+	return &Heap{values: []*Element{&Element{}}}
 }
 
-func (h *Heap) Insert(e *Element) {
-	h.values = append(h.values, e)
-	h.sinkUp()
-}
-
-func (h *Heap) left(i int) int {
-	r := 2*i + 1
-	if r >= len(h.values) {
-		return -1
+func (h *Heap) Insert(v *Element) {
+	h.values = append(h.values, v)
+	i := len(h.values) - 1
+	for i/2 != 0 && h.values[i/2].Frenquent < v.Frenquent {
+		h.values[i] = h.values[i/2]
+		i = i / 2
 	}
-	return r
+	h.values[i] = v
 }
 
-func (h *Heap) right(i int) int {
-	r := 2*i + 2
-	if r >= len(h.values) {
-		return -1
+func (h *Heap) Delete() *Element {
+	if len(h.values) == 1 {
+		panic("heap is empty")
 	}
-	return r
-}
+	max := h.values[1]
+	last := h.values[len(h.values)-1]
 
-func (h *Heap) parent(i int) int {
-	r := (i - 1) / 2
-	if r < 0 {
-		return -1
+	var i, child int
+	for i = 1; i*2 < len(h.values); i = child {
+		child = i * 2
+		if child < len(h.values)-1 && h.values[child+1].Frenquent > h.values[child].Frenquent {
+			child += 1
+		}
+		if last.Frenquent < h.values[child].Frenquent {
+			h.values[i] = h.values[child]
+		} else {
+			break
+		}
 	}
-	return r
-}
-
-func (h *Heap) sinkUp() {
-	currentIndex := len(h.values) - 1
-	parentIndex := h.parent(currentIndex)
-
-	current, parent := h.values[currentIndex], h.values[parentIndex]
-	for current.Frenquent > parent.Frenquent {
-		h.values[currentIndex], h.values[parentIndex] = parent, current
-		currentIndex = parentIndex
-		parentIndex = h.parent(currentIndex)
-		current, parent = h.values[currentIndex], h.values[parentIndex]
-	}
+	h.values[i] = last
+	h.values = h.values[:len(h.values)-1]
+	return max
 }
 
 func topKFrequent(nums []int, k int) []int {
@@ -66,8 +60,6 @@ func topKFrequent(nums []int, k int) []int {
 	for _, num := range nums {
 		m[num] += 1
 	}
-
-	fmt.Println(m)
 
 	heap := New()
 	for k, v := range m {
@@ -79,7 +71,7 @@ func topKFrequent(nums []int, k int) []int {
 
 	var result []int
 	for i := 0; i < k; i++ {
-		result = append(result, heap.values[i].Value)
+		result = append(result, heap.Delete().Value)
 	}
 	return result
 }
