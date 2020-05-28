@@ -3,30 +3,25 @@ package main
 import "fmt"
 
 func main() {
-	fmt.Println(plusOne([]int{1, 2, 3}))
+	fmt.Println(plusOne([]int{9, 9, 9}))
 }
 
 func plusOne(digits []int) []int {
 	plus := true
-	length := len(digits) + 1
-	result := make([]int, length, length)
 	for i := len(digits) - 1; i >= 0; i-- {
-		v := digits[i]
-		if plus {
-			if v == 9 {
-				result[i+1] = 0
-				plus = true
-			} else {
-				result[i+1] = v + 1
-				plus = false
-			}
+		if !plus {
+			continue
+		}
+		digits[i] = digits[i] + 1
+		if digits[i] == 10 {
+			digits[i] = 0
+			plus = true
 		} else {
-			result[i+1] = v
+			plus = false
 		}
 	}
 	if plus {
-		result[0] = 1
-		return result
+		return append([]int{1}, digits...)
 	}
-	return result[1:]
+	return digits
 }
