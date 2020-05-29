@@ -6,6 +6,34 @@ type TreeNode struct {
 	Right *TreeNode
 }
 
+func inorderTraversal(root *TreeNode) []int {
+	var result []int
+	if root != nil {
+		result = append(result, inorderTraversal(root.Left)...)
+		result = append(result, root.Val)
+		result = append(result, inorderTraversal(root.Right)...)
+	}
+	return result
+}
+
+func inorderTraversal2(root *TreeNode) []int {
+	var result []int
+
+	node := root
+	stack := NewStack()
+	for len(stack.values) != 0 || node != nil {
+		for node != nil {
+			stack.push(node)
+			node = node.Left
+		}
+		top := stack.pop()
+		result = append(result, top.Val)
+		node = top.Right
+	}
+
+	return result
+}
+
 type Stack struct {
 	values []*TreeNode
 }
@@ -29,32 +57,4 @@ func (s *Stack) pop() *TreeNode {
 	x, v := s.values[len(s.values)-1], s.values[:len(s.values)-1]
 	s.values = v
 	return x
-}
-
-func inorderTraversal(root *TreeNode) []int {
-	var result []int
-	if root != nil {
-		result = append(result, inorderTraversal(root.Left)...)
-		result = append(result, root.Val)
-		result = append(result, inorderTraversal(root.Right)...)
-	}
-	return result
-}
-
-func inorderTraversal2(root *TreeNode) []int {
-	var result []int
-
-	node := root
-	stack := NewStack()
-	for len(stack.values) != 0 && node != nil {
-		for node != nil {
-			stack.push(node)
-			node = node.Left
-		}
-		top := stack.pop()
-		result = append(result, top.Val)
-		node = top.Right
-	}
-
-	return result
 }
