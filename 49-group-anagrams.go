@@ -24,22 +24,35 @@ func sortStr(s string) string {
 
 func groupAnagrams(strs []string) [][]string {
 	temp := make(map[string][]int)
-	for idx, str := range strs {
-		sorted := sortStr(str)
-		found, ok := temp[sorted]
-		if !ok {
-			temp[sorted] = []int{idx}
-		} else {
-			temp[sorted] = append(found, idx)
-		}
+	for i, str := range strs {
+		converted := sortStr(str)
+		temp[converted] = append(temp[converted], i)
 	}
-	var result [][]string
+	var r [][]string
 	for _, v := range temp {
 		var sub []string
-		for _, idx := range v {
-			sub = append(sub, strs[idx])
+		for _, i := range v {
+			sub = append(sub, strs[i])
 		}
-		result = append(result, sub)
+		r = append(r, sub)
 	}
-	return result
+	return r
+}
+
+func groupAnagrams2(strs []string) [][]string {
+	var r [][]string
+
+	temp := make(map[string]int)
+	for _, str := range strs {
+		converted := sortStr(str)
+		index, ok := temp[converted]
+		if ok {
+			r[index] = append(r[index], str)
+		} else {
+			r = append(r, []string{str})
+			temp[converted] = len(r) - 1
+		}
+	}
+
+	return r
 }
