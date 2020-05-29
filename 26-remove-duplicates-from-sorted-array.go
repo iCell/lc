@@ -18,15 +18,16 @@ func removeDuplicates(nums []int) int {
 }
 
 func removeDuplicates2(nums []int) int {
-	if len(nums) == 0 {
-		return 0
+	if len(nums) <= 1 {
+		return len(nums)
 	}
-	i := 0
-	for j := 1; j < len(nums); j++ {
-		if nums[i] != nums[j] {
-			i++
-			nums[i] = nums[j]
+	var slowIndex, fastIndex int
+	for fastIndex = 0; fastIndex < len(nums); fastIndex++ {
+		slow, fast := nums[slowIndex], nums[fastIndex]
+		if slow != fast {
+			slowIndex += 1
+			nums[slowIndex] = nums[fastIndex]
 		}
 	}
-	return i + 1
+	return slowIndex + 1
 }
