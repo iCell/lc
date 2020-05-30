@@ -56,3 +56,15 @@ func groupAnagrams2(strs []string) [][]string {
 
 	return r
 }
+
+func groupAnagrams3(strs []string) [][]string {
+	temp := make(map[string][]string)
+	for _, str := range strs {
+		r := make([]rune, 26, 26)
+		for _, rune := range str {
+			r[int(rune-'a')]++
+		}
+		temp[string(r)] = append(temp[string(r)], str)
+	}
+	return r
+}

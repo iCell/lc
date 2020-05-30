@@ -6,21 +6,7 @@ import (
 )
 
 func main() {
-	h := New()
-	h.Insert(1)
-	fmt.Println(h.values)
-	h.Insert(2)
-	fmt.Println(h.values)
-	h.Insert(3)
-	fmt.Println(h.values)
-
-	h.Insert(10)
-	fmt.Println(h.values)
-	h.Insert(9)
-	fmt.Println(h.values)
-
-	fmt.Println(h.Delete())
-	fmt.Println(h.values)
+	fmt.Println(rune('a') - 'a')
 }
 
 type Heap struct {
