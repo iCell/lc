@@ -23,36 +23,38 @@ func New() *Heap {
 
 func (h *Heap) Insert(v *Element) {
 	h.values = append(h.values, v)
-	i := len(h.values) - 1
-	for i/2 != 0 && h.values[i/2].Frenquent < v.Frenquent {
-		h.values[i] = h.values[i/2]
-		i = i / 2
-	}
-	h.values[i] = v
+	h.sinkUp(len(h.values) - 1)
 }
 
 func (h *Heap) Delete() *Element {
 	if len(h.values) == 1 {
 		panic("heap is empty")
 	}
-	max := h.values[1]
-	last := h.values[len(h.values)-1]
+	max, last := h.values[1], h.values[len(h.values)-1]
+	h.values[1], h.values = last, h.values[:len(h.values)-1]
+	h.sinkDown(1)
+	return max
+}
 
-	var i, child int
-	for i = 1; i*2 < len(h.values); i = child {
-		child = i * 2
-		if child < len(h.values)-1 && h.values[child+1].Frenquent > h.values[child].Frenquent {
-			child += 1
+func (h *Heap) sinkUp(index int) {
+	for index/2 > 0 && h.values[index].Frenquent > h.values[index/2].Frenquent {
+		h.values[index], h.values[index/2] = h.values[index/2], h.values[index]
+		index = index / 2
+	}
+}
+
+func (h *Heap) sinkDown(index int) {
+	child, length := index*2, len(h.values)
+	for child < length {
+		if child+1 < length && h.values[child].Frenquent < h.values[child+1].Frenquent {
+			child++
 		}
-		if last.Frenquent < h.values[child].Frenquent {
-			h.values[i] = h.values[child]
-		} else {
+		if h.values[index].Frenquent < h.values[child].Frenquent {
 			break
 		}
+		h.values[index], h.values[child] = h.values[child], h.values[index]
+		child = child * 2
 	}
-	h.values[i] = last
-	h.values = h.values[:len(h.values)-1]
-	return max
 }
 
 func topKFrequent(nums []int, k int) []int {
