@@ -7,7 +7,7 @@ func main() {
 }
 
 func permute(nums []int) [][]int {
-	if len(nums) == 0 {
+	if len(nums) == 1 {
 		return [][]int{nums}
 	}
 
@@ -17,10 +17,9 @@ func permute(nums []int) [][]int {
 		copy(rest[:i], nums[:i])
 		copy(rest[i:], nums[i+1:])
 
-		for _, s := range permute(rest) {
-			result = append(result, append(s, num))
+		for _, r := range permute(rest) {
+			result = append(result, append(r, num))
 		}
 	}
-
 	return result
 }
