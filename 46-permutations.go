@@ -3,7 +3,7 @@ package main
 import "fmt"
 
 func main() {
-	fmt.Println(permute([]int{1, 1, 2, 3}))
+	fmt.Println(permute2([]int{1, 2, 3}))
 }
 
 func permute(nums []int) [][]int {
@@ -22,4 +22,35 @@ func permute(nums []int) [][]int {
 		}
 	}
 	return result
+}
+
+func permute2(nums []int) [][]int {
+	result := make([][]int, 0)
+	var temp []int
+	helper(&result, nums, temp)
+	return result
+}
+
+func helper(result *[][]int, nums []int, temp []int) {
+	if len(nums) == len(temp) {
+		*result = append(*result, append([]int{}, temp...))
+		return
+	}
+
+	for _, num := range nums {
+		contains := false
+		for _, t := range temp {
+			if t == num {
+				contains = true
+				break
+			}
+		}
+		if contains {
+			continue
+		}
+
+		temp = append(temp, num)
+		helper(result, nums, temp)
+		temp = temp[:len(temp)-1]
+	}
 }
