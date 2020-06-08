@@ -6,6 +6,37 @@ type TreeNode struct {
 	Right *TreeNode
 }
 
+func largestValues2(root *TreeNode) []int {
+	if root == nil {
+		return []int{}
+	}
+	var result []int
+	queue := &Queue{}
+
+	queue.InQueue(root)
+	for !queue.IsEmpty() {
+		level := queue.Size()
+		var max *int
+		for i := 0; i < level; i++ {
+			node := queue.DeQueue()
+			if node.Left != nil {
+				queue.InQueue(node.Left)
+			}
+			if node.Right != nil {
+				queue.InQueue(node.Right)
+			}
+			if max == nil {
+				max = &node.Val
+			} else if *max < node.Val {
+				max = &node.Val
+			}
+		}
+		result = append(result, *max)
+	}
+
+	return result
+}
+
 func largestValues(root *TreeNode) []int {
 	var result []int
 	queue := &Queue{}

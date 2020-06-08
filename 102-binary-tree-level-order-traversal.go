@@ -7,6 +7,33 @@ type TreeNode struct {
 }
 
 func levelOrder(root *TreeNode) [][]int {
+	if root == nil {
+		return [][]int{}
+	}
+	var result [][]int
+	queue := &Queue{}
+
+	queue.InQueue(root)
+	for !queue.IsEmpty() {
+		level := queue.Size()
+		values := make([]int, 0, level)
+		for i := 0; i < level; i++ {
+			node := queue.DeQueue()
+			if node.Left != nil {
+				queue.InQueue(node.Left)
+			}
+			if node.Right != nil {
+				queue.InQueue(node.Right)
+			}
+			values = append(values, node.Val)
+		}
+		result = append(result, values)
+	}
+
+	return result
+}
+
+func levelOrder2(root *TreeNode) [][]int {
 	var result [][]int
 	queue := &Queue{}
 
