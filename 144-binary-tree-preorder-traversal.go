@@ -25,8 +25,14 @@ func preorderTraversal2(root *TreeNode) []int {
 	var result []int
 	stack := NewStack()
 	node := root
-	for stack.isEmpty() || node != nil {
-
+	for !stack.isEmpty() || node != nil {
+		for node != nil {
+			result = append(result, node.Val)
+			stack.push(node)
+			node = node.Left
+		}
+		poped := stack.pop()
+		node = poped.Right
 	}
 	return result
 }
