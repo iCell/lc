@@ -7,13 +7,18 @@ type TreeNode struct {
 }
 
 func preorderTraversal(root *TreeNode) []int {
-	var result []int
-	if root != nil {
-		result = append(result, root.Val)
-		result = append(result, preorderTraversal(root.Left)...)
-		result = append(result, preorderTraversal(root.Right)...)
-	}
+	result := make([]int, 0)
+	helper(&result, root)
 	return result
+}
+
+func helper(result *[]int, root *TreeNode) {
+	if root == nil {
+		return
+	}
+	*result = append(*result, root.Val)
+	helper(result, root.Left)
+	helper(result, root.Right)
 }
 
 func preorderTraversal2(root *TreeNode) []int {
@@ -21,13 +26,7 @@ func preorderTraversal2(root *TreeNode) []int {
 	stack := NewStack()
 	node := root
 	for stack.isEmpty() || node != nil {
-		for node != nil {
-			result = append(result, node.Val)
-			stack.push(node)
-			node = node.Left
-		}
-		top := stack.pop()
-		node = top.Right
+
 	}
 	return result
 }
