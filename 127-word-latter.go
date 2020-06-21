@@ -50,50 +50,48 @@ func ladderLength(beginWord string, endWord string, wordList []string) int {
 }
 
 func ladderLength2(beginWord string, endWord string, wordList []string) int {
-	if beginWord == endWord {
+	words := make(map[string]bool)
+	for _, word := range wordList {
+		words[word] = true
+	}
+	_, ok := words[endWord]
+	if !ok {
 		return 0
 	}
 
-	words := NewHashSet()
-	for _, w := range wordList {
-		words.Add(w)
-	}
+	begins, ends := make(map[string]bool), make(map[string]bool)
+	begins[beginWord] = true
+	ends[endWord] = true
 
-	length := 1
-
-	beginSet, endSet, visited := NewHashSet(), NewHashSet(), NewHashSet()
-	beginSet.Add(beginWord)
-	endSet.Add(endWord)
-
-	for !beginSet.IsEmpty() && !endSet.IsEmpty() {
-		if beginSet.Size() > endSet.Size() {
-			beginSet, endSet = endSet, beginSet
+	steps := 0
+	for len(begins) > 0 && len(ends) > 0 {
+		steps++
+		if len(begins) > len(ends) {
+			begins, ends = ends, begins
 		}
-		temp := NewHashSet()
-		for _, v := range beginSet.Values() {
-			runes := []rune(v)
-			for i, old := range runes {
-				for c := 'a'; c <= 'z'; c++ {
-					if c == old {
-						continue
-					}
-					runes[i] = c
 
+		temp := make(map[string]bool)
+		for w := range begins {
+			runes := []rune(w)
+			for i, old := range runes {
+				for c:='a';c<='z';c++ {
+					runes[i] = c
 					next := string(runes)
-					if endSet.Contain(next) {
-						return length + 1
+					_, exist := ends[next]
+					if exist {
+						return steps+1
 					}
-					if visited.Contain(next) || !words.Contain(next) {
+					_, valid := words[next]
+					if !valid {
 						continue
 					}
-					temp.Add(next)
-					visited.Add(next)
-					runes[i] = old
+					delete(words, next)
+					temp[next] = true
 				}
+				runes[i] = old
 			}
 		}
-		beginSet = temp
-		length++
+		begins = temp
 	}
 
 	return 0
