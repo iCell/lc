@@ -1,5 +1,50 @@
 package main
 
+func ladderLength3(beginWord string, endWord string, wordList []string) int {
+	words := make(map[string]bool)
+	for _, word := range wordList {
+		words[word] = true
+	}
+	_, ok := words[endWord]
+	if !ok {
+		return 0
+	}
+
+	begins := make(map[string]bool)
+	begins[beginWord] = true
+
+	steps := 0
+	for len(begins) > 0 {
+		steps++
+
+		// use this way to treat it like a queue
+		temp := make(map[string]bool)
+		for w := range begins {
+			runes := []rune(w)
+			for i, old := range runes {
+				for c := 'a'; c <= 'z'; c++ {
+					runes[i] = c
+					next := string(runes)
+
+					if next == endWord {
+						return steps + 1
+					}
+					_, valid := words[next]
+					if !valid {
+						continue
+					}
+					delete(words, next)
+					temp[next] = true
+				}
+				runes[i] = old
+			}
+		}
+		begins = temp
+	}
+
+	return 0
+}
+
 func ladderLength(beginWord string, endWord string, wordList []string) int {
 	if beginWord == endWord {
 		return 0
@@ -74,12 +119,12 @@ func ladderLength2(beginWord string, endWord string, wordList []string) int {
 		for w := range begins {
 			runes := []rune(w)
 			for i, old := range runes {
-				for c:='a';c<='z';c++ {
+				for c := 'a'; c <= 'z'; c++ {
 					runes[i] = c
 					next := string(runes)
 					_, exist := ends[next]
 					if exist {
-						return steps+1
+						return steps + 1
 					}
 					_, valid := words[next]
 					if !valid {
@@ -95,41 +140,6 @@ func ladderLength2(beginWord string, endWord string, wordList []string) int {
 	}
 
 	return 0
-}
-
-type HashSet struct {
-	values map[string]bool
-}
-
-func NewHashSet() *HashSet {
-	return &HashSet{
-		values: make(map[string]bool),
-	}
-}
-
-func (set *HashSet) Add(s string) {
-	set.values[s] = true
-}
-
-func (set *HashSet) Contain(s string) bool {
-	_, ok := set.values[s]
-	return ok
-}
-
-func (set *HashSet) IsEmpty() bool {
-	return len(set.values) == 0
-}
-
-func (set *HashSet) Size() int {
-	return len(set.values)
-}
-
-func (set *HashSet) Values() []string {
-	var r []string
-	for k, _ := range set.values {
-		r = append(r, k)
-	}
-	return r
 }
 
 type Queue struct {
