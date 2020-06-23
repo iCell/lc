@@ -31,3 +31,29 @@ func searchMatrix(matrix [][]int, target int) bool {
 
 	return false
 }
+
+func searchMatrix2(matrix [][]int, target int) bool {
+	if len(matrix) == 0 || len(matrix[0]) == 0 {
+		return false
+	}
+
+	m, n := len(matrix), len(matrix[0])
+
+	left, right := 0, m*n-1
+	for left <= right {
+		mid := (left + right) >> 1
+
+		v := matrix[mid/n][mid%n]
+
+		if v == target {
+			return true
+		}
+		if v > target {
+			right = mid - 1
+		} else {
+			left = mid + 1
+		}
+	}
+
+	return false
+}
