@@ -1,5 +1,15 @@
 package main
 
+// define start and end, to make a substring
+// if start == end, then there is only one character, must be a palindromic string
+// if start + 1 == end, only if character at start and end are the same
+// f[start][end] = f[start+1][end-1]
+//   0  1  2
+// 0       t
+// 1    s
+// 2 f
+// calculate f, then calculate s, then calculate t
+// so, m -> m-1, n from 0 to n
 func countSubstrings(s string) int {
     m := len(s)
     if m == 0 {
@@ -22,7 +32,7 @@ func countSubstrings(s string) int {
                 arr[start][end] = 1
             }
             if arr[start][end] == 1 {
-                count += 1
+                count++
             }
         }
     }
