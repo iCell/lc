@@ -29,10 +29,17 @@ func longestCommonSubsequence2(text1 string, text2 string) int {
 			if text1[i-1] == text2[j-1] {
 				dp[i][j] = dp[i-1][j-1] + 1
 			} else {
-				dp[i][j] = int(math.Max(float64(dp[i-1][j]), float64(dp[i][j-1])))
+				dp[i][j] = max(dp[i-1][j], dp[i][j-1])
 			}
 		}
 	}
 
 	return dp[m][n]
+}
+
+func max(x, y int) int {
+	if x > y {
+		return x
+	}
+	return y
 }
