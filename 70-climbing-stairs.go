@@ -47,3 +47,22 @@ func climbStairs(n int) int {
 
 	return cache[n]
 }
+
+// f[n] = f[n-1] + f[n-2]
+func climbStairs3(n int) int {
+	cache := make(map[int]int, n)
+	return helper(n, cache)
+}
+
+func helper(n int, cache map[int]int) int {
+	if n <= 2 {
+		return n
+	}
+	cached, ok := cache[n]
+	if ok {
+		return cached
+	}
+	result := helper(n-1, cache) + helper(n-2, cache)
+	cache[n] = result
+	return result
+}

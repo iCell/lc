@@ -1,5 +1,79 @@
 package main
 
+var directions = [][]int{[]int{0, -1}, []int{-1, 0}}
+
+func numIslands3(grid [][]byte) int {
+	m, n := len(grid), 0
+	if m == 0 {
+		return 0
+	}
+	n = len(grid[0])
+	if n == 0 {
+		return 0
+	}
+
+	uf := NewUnionFind(m * n)
+
+	for i := 0; i < m; i++ {
+		for j := 0; j < n; j++ {
+			if grid[i][j] == byte('1') {
+				for _, direction := range directions {
+					x, y := i+direction[0], j+direction[1]
+					if x >= 0 && x < m && y >= 0 && y < n {
+						if grid[x][y] == byte('1') {
+							uf.Union(i*n+j, x*n+y)
+						}
+					}
+				}
+			}
+		}
+	}
+
+	result := make(map[int]bool, uf.Size)
+	for i := 0; i < m; i++ {
+		for j := 0; j < n; j++ {
+			if grid[i][j] == byte('1') {
+				result[uf.Find(i*n+j)] = true
+			}
+		}
+	}
+
+	return len(result)
+}
+
+type UnionFind struct {
+	Size    int
+	Parents []int
+}
+
+func NewUnionFind(size int) *UnionFind {
+	parents := make([]int, size, size)
+	for i := range parents {
+		parents[i] = i
+	}
+	return &UnionFind{
+		Size:    size,
+		Parents: parents,
+	}
+}
+
+func (uf *UnionFind) Find(p int) int {
+	for p != uf.Parents[p] {
+		uf.Parents[p] = uf.Parents[uf.Parents[p]]
+		p = uf.Parents[p]
+	}
+	return p
+}
+
+func (uf *UnionFind) Union(p, q int) {
+	l, r := uf.Find(p), uf.Find(q)
+	if l == r {
+		return
+	}
+	uf.Parents[l] = r
+	uf.Size--
+}
+
 func numIslands(grid [][]byte) int {
 	if len(grid) == 0 {
 		return 0
