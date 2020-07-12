@@ -15,3 +15,13 @@ func bitCount(num int) int {
     return count
 }
 
+// giving a num,
+// if is not odd number, the numbers of 1 is equal to num/2
+func countBits2(num int) []int {
+    dp := make([]int, num+1, num+1)
+    for i := 1; i < len(dp); i++ {
+        dp[i] = dp[i>>1] + i&1
+    }
+    return dp
+}
+
