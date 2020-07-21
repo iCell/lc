@@ -24,7 +24,7 @@ func quickSortHelper(arr []int, left, right int) {
 		arr[i], arr[j] = arr[j], arr[i]
 	}
 
-	arr[right], arr[j] = arr[j], arr[right]
+	arr[pivot], arr[j] = arr[j], arr[pivot]
 	pivot = j
 
 	quickSortHelper(arr, left, pivot-1)
