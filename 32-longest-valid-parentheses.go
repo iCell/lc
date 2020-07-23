@@ -39,3 +39,37 @@ func longestValidParentheses(s string) int {
 // 2.2.2.2 s[i-dp[i-1]-2]不存在，dp[i] = dp[i-1] + 2
 
 // https://www.youtube.com/watch?v=39CEPFCl5sE
+
+func longestValidParentheses2(s string) int {
+    var maxLength int
+
+    dp := make([]int, len(s), len(s))
+
+    for i := 1; i < len(dp); i++ {
+        if s[i] == ')' {
+            if s[i-1] == '(' {
+                if i-2 >= 0 {
+                    dp[i] = dp[i-2] + 2
+                } else {
+                    dp[i] = 2
+                }
+            } else if i-dp[i-1]-1 >= 0 && s[i-dp[i-1]-1] == '(' {
+                if i-dp[i-1]-2 >= 0 {
+                    dp[i] = dp[i-1] + 2 + dp[i-dp[i-1]-2]
+                } else {
+                    dp[i] = dp[i-1] + 2
+                }
+            }
+        }
+        maxLength = max(maxLength, dp[i])
+    }
+
+    return maxLength
+}
+
+func max(x, y int) int {
+    if x > y {
+        return x
+    }
+    return y
+}
