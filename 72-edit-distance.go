@@ -1,3 +1,7 @@
+// if word1[i] != word2[j]
+// dp[i-1][j-1] 代表去掉最后一个字符后，前面的字符都一样了，然后在此基础上 +1，所以是替换操作
+// dp[i-1][j] 代表把 word1 的最后一个字符删掉，然后在此基础上 +1，所以是增加操作
+// dp[i][j-1] 代表把 word2 的最后一个字符删掉，所以是删减操作
 func minDistance(word1 string, word2 string) int {
     m, n := len(word1)+1, len(word2)+1
     dp := make([][]int, m, m)
