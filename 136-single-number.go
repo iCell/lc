@@ -19,3 +19,10 @@ func singleNumber(nums []int) int {
     return nums[0]
 }
 
+func singleNumber2(nums []int) int {
+    r := 0
+    for _, num := range nums {
+        r = r ^ num
+    }
+    return r
+}
