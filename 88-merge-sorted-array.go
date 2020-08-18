@@ -37,3 +37,35 @@ func merge(nums1 []int, m int, nums2 []int, n int) {
 		index++
 	}
 }
+
+func merge2(nums1 []int, m int, nums2 []int, n int) {
+	for i := 0; i < n; i++ {
+		nums1[i+m] = nums2[i]
+	}
+	quickSortHelper(nums1, 0, len(nums1)-1)
+}
+
+func quickSortHelper(arr []int, left, right int) {
+	if right <= left {
+		return
+	}
+
+	i, j := left, right
+	pivot := right
+
+	for i < j {
+		for arr[i] <= arr[pivot] && i < j {
+			i++
+		}
+		for arr[j] >= arr[pivot] && i < j {
+			j--
+		}
+		arr[i], arr[j] = arr[j], arr[i]
+	}
+
+	arr[pivot], arr[j] = arr[j], arr[pivot]
+	pivot = j
+
+	quickSortHelper(arr, left, pivot-1)
+	quickSortHelper(arr, pivot+1, right)
+}
