@@ -1,5 +1,38 @@
 package main
 
+func findCircleNumBFS(M [][]int) int {
+	if len(M) == 0 {
+		return 0
+	}
+
+	visited := make(map[int]bool, len(M))
+	queue := make([]int, 0, len(M))
+
+	var count int
+	for i := range M {
+		if visited[i] == true {
+			continue
+		}
+
+		queue = append(queue, i)
+		for len(queue) != 0 {
+			pop, temp := queue[0], queue[1:]
+			queue = temp
+
+			for j, v := range M[pop] {
+				if visited[j] == false && v == 1 {
+					queue = append(queue, j)
+					visited[j] = true
+				}
+			}
+		}
+
+		count++
+	}
+
+	return count
+}
+
 func findCircleNum(M [][]int) int {
 	uf := NewUnionFind(len(M))
 
