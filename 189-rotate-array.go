@@ -2,9 +2,7 @@
 // cba fed
 // def abc
 func rotate(nums []int, k int) {
-    if k > len(nums) {
-        k -= len(nums)
-    }
+    k = k % len(nums)
     index := len(nums) - 1 - k
 
     left, right := 0, index
