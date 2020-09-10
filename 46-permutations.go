@@ -54,3 +54,31 @@ func helper(result *[][]int, nums []int, temp []int) {
 		temp = temp[:len(temp)-1]
 	}
 }
+
+func permute(nums []int) [][]int {
+	temp, result := make([]int, 0), make([][]int, 0)
+	visited := make(map[int]bool)
+	helper(nums, temp, &result, visited)
+	return result
+}
+
+func helper(nums []int, permutation []int, result *[][]int, visited map[int]bool) {
+	if len(nums) == len(permutation) {
+		*result = append(*result, append([]int{}, permutation...))
+		return
+	}
+
+	for _, num := range nums {
+		if visited[num] == true {
+			continue
+		}
+
+		permutation = append(permutation, num)
+		visited[num] = true
+
+		helper(nums, permutation, result, visited)
+
+		permutation = permutation[:len(permutation)-1]
+		delete(visited, num)
+	}
+}
