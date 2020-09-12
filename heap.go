@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"math"
 )
 
 func main() {
@@ -34,7 +33,7 @@ type Heap struct {
 }
 
 func New() *Heap {
-	return &Heap{values: []int{math.MinInt64}}
+	return &Heap{values: []int{}}
 }
 
 func (h *Heap) Print() {
@@ -43,27 +42,29 @@ func (h *Heap) Print() {
 
 func (h *Heap) Insert(v int) {
 	h.values = append(h.values, v)
-	h.sinkUp(len(h.values) - 1)
+	h.sinkUp()
 }
 
 func (h *Heap) Delete() int {
 	if len(h.values) == 1 {
 		panic("heap is empty")
 	}
-	max, last := h.values[1], h.values[len(h.values)-1]
-	h.values[1], h.values = last, h.values[:len(h.values)-1]
-	h.sinkDown(1)
+	max, last := h.values[0], h.values[len(h.values)-1]
+	h.values[0], h.values = last, h.values[:len(h.values)-1]
+	h.sinkDown()
 	return max
 }
 
-func (h *Heap) sinkUp(index int) {
-	for index/2 > 0 && h.values[index] > h.values[index/2] {
+func (h *Heap) sinkUp() {
+	index := len(h.values) - 1
+	for index/2 >= 0 && h.values[index] > h.values[index/2] {
 		h.values[index], h.values[index/2] = h.values[index/2], h.values[index]
 		index = index / 2
 	}
 }
 
-func (h *Heap) sinkDown(index int) {
+func (h *Heap) sinkDown() {
+	var index int
 	for index*2 < len(h.values) {
 		older := index * 2
 		right := older + 1

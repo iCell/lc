@@ -1,6 +1,4 @@
-package main
-
-var pairs = map[rune][]string{
+var mapping = map[byte][]string{
 	'2': []string{"a", "b", "c"},
 	'3': []string{"d", "e", "f"},
 	'4': []string{"g", "h", "i"},
@@ -15,24 +13,19 @@ func letterCombinations(digits string) []string {
 	if len(digits) == 0 {
 		return []string{}
 	}
- 	result := make([]string, 0)
-	helper(&result, 0, len(digits), digits, "")
-	return result
+	results := make([]string, 0)
+	dfs(digits, 0, "", &results)
+	return results
 }
 
-func helper(result *[]string, level int, max int, digits string, temp string) {
-	if level >= max {
-		*result = append(*result, temp)
+func dfs(origin string, idx int, digit string, digits *[]string) {
+	if idx == len(origin) {
+		*digits = append(*digits, digit)
 		return
 	}
 
-	r := []rune(digits)[level]
-	for _, f := range pairs[r] {
-		temp = temp + f
-		helper(result, level+1, max, digits, temp)
-		temp = temp[:len(temp)-1]
-
-		// another approach
-		//helper(result, level+1, max, digits, temp + f)
+	letter := origin[idx]
+	for _, c := range mapping[letter] {
+		dfs(origin, idx+1, digit+c, digits)
 	}
 }

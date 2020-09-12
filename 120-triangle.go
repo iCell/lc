@@ -1,3 +1,33 @@
+import "fmt"
+
+func point(x, y int) string {
+    return fmt.Sprintf("%d-%d", x, y)
+}
+
+func minimumTotal(triangle [][]int) int {
+    memo := make(map[string]int)
+    return dfs(triangle, 0, 0, memo)
+}
+
+func dfs(triangle [][]int, x, y int, memo map[string]int) int {
+    if x == len(triangle) {
+        return 0
+    }
+    v, exist := memo[point(x, y)]
+    if exist {
+        return v
+    }
+    n := min(dfs(triangle, x+1, y, memo), dfs(triangle, x+1, y+1, memo)) + triangle[x][y]
+    memo[point(x, y)] = n
+    return n
+}
+
+func min(x, y int) int {
+    if x > y {
+        return y
+    }
+    return x
+}
 
 // f[0][0] = current
 // f[i][0] = f[i-1][0] + current
