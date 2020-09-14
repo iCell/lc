@@ -6,26 +6,26 @@ import (
 
 func main() {
 	h := New()
-	h.Insert(6)
+	h.Insert(2)
 	h.Print()
 	h.Insert(1)
 	h.Print()
-	h.Insert(9)
-	h.Print()
-	h.Insert(4)
-	h.Print()
-	h.Insert(7)
-	h.Print()
-	h.Insert(10)
-	h.Print()
+	// h.Insert(9)
+	// h.Print()
+	// h.Insert(4)
+	// h.Print()
+	// h.Insert(7)
+	// h.Print()
+	// h.Insert(10)
+	// h.Print()
 
 	fmt.Println(h.Delete())
 	h.Print()
-	fmt.Println(h.Delete())
-	h.Print()
-	fmt.Println(h.Delete())
-	h.Print()
-	fmt.Println(h.Delete())
+	// fmt.Println(h.Delete())
+	// h.Print()
+	// fmt.Println(h.Delete())
+	// h.Print()
+	// fmt.Println(h.Delete())
 }
 
 type Heap struct {
@@ -46,12 +46,11 @@ func (h *Heap) Insert(v int) {
 }
 
 func (h *Heap) Delete() int {
-	if len(h.values) == 1 {
-		panic("heap is empty")
-	}
 	max, last := h.values[0], h.values[len(h.values)-1]
 	h.values[0], h.values = last, h.values[:len(h.values)-1]
-	h.sinkDown()
+	if len(h.values) > 1 {
+		h.sinkDown()
+	}
 	return max
 }
 

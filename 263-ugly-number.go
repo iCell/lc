@@ -1,6 +1,18 @@
 package main
 
 func isUgly(num int) bool {
+	if num <= 0 {
+		return false
+	}
+	for i := 2; i < 6; i++ {
+		for num%i == 0 {
+			num = num / i
+		}
+	}
+	return num == 1
+}
+
+func isUgly(num int) bool {
 	if num == 0 {
 		return false
 	}
