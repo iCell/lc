@@ -36,10 +36,6 @@ func New() *Heap {
 	return &Heap{values: []int{}}
 }
 
-func (h *Heap) Print() {
-	fmt.Println(h.values)
-}
-
 func (h *Heap) Insert(v int) {
 	h.values = append(h.values, v)
 	h.sinkUp()
@@ -56,24 +52,35 @@ func (h *Heap) Delete() int {
 
 func (h *Heap) sinkUp() {
 	index := len(h.values) - 1
-	for index/2 >= 0 && h.values[index] > h.values[index/2] {
-		h.values[index], h.values[index/2] = h.values[index/2], h.values[index]
-		index = index / 2
+	for parent(index) >= 0 && h.values[index] > h.values[parent(index)] {
+		h.values[index], h.values[parent(index)] = h.values[parent(index)], h.values[index]
+		index = parent(index)
 	}
 }
 
 func (h *Heap) sinkDown() {
 	var index int
-	for index*2 < len(h.values) {
-		older := index * 2
-		right := older + 1
-		if right < len(h.values) && h.values[older] < h.values[right] {
-			older = right
+	for leftChild(index) < len(h.values) {
+		left, right := leftChild(index), rightChild(index)
+		if right < len(h.values) && h.values[left] < h.values[right] {
+			left = right
 		}
-		if h.values[older] < h.values[index] {
+		if h.values[left] < h.values[index] {
 			break
 		}
-		h.values[older], h.values[index] = h.values[index], h.values[older]
-		index = older
+		h.values[left], h.values[index] = h.values[index], h.values[left]
+		index = left
 	}
+}
+
+func leftChild(index int) int {
+	return index*2 + 1
+}
+
+func rightChild(index int) int {
+	return index*2 + 2
+}
+
+func parent(index int) int {
+	return (index - 1) / 2
 }
