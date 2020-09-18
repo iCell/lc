@@ -32,7 +32,10 @@ func subarraySum(nums []int, k int) int {
     return count
 }
 
-// sum[j] - k = sum[i]
+// sum[i, j] = sum[0, j] - sum[0, i-1]
+// k = sum[j] - sum[i-1]
+// sum[j] - k = sum[i-1]  j 减去 k 的和正好为 i-1的，那么意味着存在一个前缀和正好为 k
+// 当 i = 0 时，sum[i-1] = sum[-1] = 0,
 func subarraySum(nums []int, k int) int {
     memo := make(map[int]int)
     memo[0] = 1
