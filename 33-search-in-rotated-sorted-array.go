@@ -9,6 +9,8 @@ func search(nums []int, target int) int {
 		if nums[mid] == target {
 			return mid
 		}
+		// 只能根据 mid 和 low 来判断是左边还是右边
+		// 因为 low 是两段中的分界点，若选择 high，则 mid >= high 并不一定代表处于左边，因为 mid == high 就是在右边
 		if nums[mid] >= nums[low] {
 			if nums[mid] > target && target >= nums[low] {
 				high = mid - 1
