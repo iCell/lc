@@ -1,7 +1,4 @@
-import "sort"
-
 func combinationSum(candidates []int, target int) [][]int {
-    sort.Ints(candidates)
     results := make([][]int, 0)
     dfs(candidates, target, 0, []int{}, &results)
     return results
