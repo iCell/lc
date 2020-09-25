@@ -27,3 +27,34 @@ func dfs(s string, hash map[string]bool, memo map[string]bool) bool {
     memo[s] = false
     return false
 }
+
+func wordBreak(s string, wordDict []string) bool {
+    dict := make(map[string]bool, len(wordDict))
+    for _, word := range wordDict {
+        dict[word] = true
+    }
+    memo := make(map[int]bool, len(s))
+    return dfs(s, dict, 0, memo)
+}
+
+func dfs(s string, dict map[string]bool, idx int, memo map[int]bool) bool {
+    if idx == len(s) {
+        return true
+    }
+
+    r, calculated := memo[idx]
+    if calculated {
+        return r
+    }
+
+    for i := idx + 1; i <= len(s); i++ {
+        prefix := s[idx:i]
+        if dict[prefix] && dfs(s, dict, i, memo) {
+            memo[idx] = true
+            return true
+        }
+    }
+
+    memo[idx] = false
+    return false
+}
