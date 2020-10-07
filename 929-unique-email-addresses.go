@@ -1,26 +1,19 @@
 import "strings"
 
 func numUniqueEmails(emails []string) int {
-    memo := make(map[string]bool)
+    memo := make(map[string]bool, len(emails))
     for _, email := range emails {
-        s := remove(email)
-        if memo[s] {
-            continue
-        }
-        memo[s] = true
+        memo[format(email)] = true
     }
     return len(memo)
 }
 
-func remove(s string) string {
-    domainIdx := strings.Index(s, "@")
+func format(email string) string {
+    components := strings.Split(email, "@")
+    local, domain := components[0], components[1]
 
-    local := strings.ReplaceAll(s[:domainIdx], ".", "")
+    local = (strings.Split(local, "+"))[0]
+    local = strings.ReplaceAll(local, ".", "")
 
-    plusIdx := strings.Index(local, "+")
-    if plusIdx == -1 {
-        return local + s[domainIdx:]
-    }
-
-    return local[:plusIdx] + s[domainIdx:]
+    return local + "@" + domain
 }
