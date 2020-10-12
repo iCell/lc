@@ -10,14 +10,14 @@ func main() {
 	h.Print()
 	h.Insert(1)
 	h.Print()
-	// h.Insert(9)
-	// h.Print()
-	// h.Insert(4)
-	// h.Print()
-	// h.Insert(7)
-	// h.Print()
-	// h.Insert(10)
-	// h.Print()
+	h.Insert(9)
+	h.Print()
+	h.Insert(4)
+	h.Print()
+	h.Insert(7)
+	h.Print()
+	h.Insert(10)
+	h.Print()
 
 	fmt.Println(h.Delete())
 	h.Print()
@@ -71,6 +71,10 @@ func (h *Heap) sinkDown() {
 		h.values[left], h.values[index] = h.values[index], h.values[left]
 		index = left
 	}
+}
+
+func (h *Heap) Print() {
+	fmt.Println(h.values)
 }
 
 func leftChild(index int) int {
