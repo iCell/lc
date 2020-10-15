@@ -15,7 +15,7 @@ func minArea(image [][]byte, x int, y int) int {
     top, bottom, left, right = x, x, y, y
     dfs(image, x, y, m, n)
 
-    return (right - left) * (bottom - top)
+    return (right - left + 1) * (bottom - top + 1)
 }
 
 func dfs(image [][]byte, x, y int, m, n int) {
@@ -27,8 +27,8 @@ func dfs(image [][]byte, x, y int, m, n int) {
     }
     image[x][y] = '0'
 
-    top, bottom = min(top, x), max(bottom, x+1)
-    left, right = min(left, y), max(right, y+1)
+    top, bottom = min(top, x), max(bottom, x)
+    left, right = min(left, y), max(right, y)
 
     dfs(image, x+1, y, m, n)
     dfs(image, x-1, y, m, n)
