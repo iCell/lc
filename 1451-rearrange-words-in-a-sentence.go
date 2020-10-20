@@ -18,3 +18,13 @@ func arrangeWords(text string) string {
     sorted[0] = unicode.ToUpper(sorted[0])
     return string(sorted)
 }
+
+func arrangeWords(text string) string {
+    substrings := strings.Split(text, " ")
+    substrings[0] = strings.ToLower(substrings[0])
+    sort.SliceStable(substrings, func(i, j int) bool {
+        return len(substrings[i]) < len(substrings[j])
+    })
+    substrings[0] = strings.Title(substrings[0])
+    return strings.Join(substrings, " ")
+}
