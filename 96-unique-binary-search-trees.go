@@ -9,3 +9,23 @@ func numTrees(n int) int {
 	return dp[n]
 }
 
+func numTrees(n int) int {
+	return helper(1, n)
+}
+
+func helper(start, end int) int {
+	if start >= end {
+		return 1
+	}
+	
+	var count int
+	for i := start; i <= end; i++ {
+		left := helper(start, i - 1)
+		right := helper(i + 1, end)
+		count += (left * right)
+	}
+	return count
+}
+
+
+
