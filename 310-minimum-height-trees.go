@@ -51,3 +51,49 @@ func helper(node int, nodes map[int][]int) int {
 	}
 	return depth - 1
 }
+
+func findMinHeightTrees(n int, edges [][]int) []int {
+	if n == 1 {
+		return []int{0}
+	}
+	
+	graph, degree := make(map[int][]int, n), make([]int, n)
+	for i := range edges {
+		u, v := edges[i][0], edges[i][1]
+		
+		graph[v] = append(graph[v], u)
+		graph[u] = append(graph[u], v)
+		
+		degree[v] += 1
+		degree[u] += 1
+	}
+	
+	queue := make([]int, 0)
+	for i := 0; i < len(degree); i++ {
+		if degree[i] == 1 {
+			queue = append(queue, i)
+		}
+	}
+	
+	for len(queue) < n {
+		size := len(queue)
+		n -= size
+		for size > 0 {
+			first, temp := queue[0], queue[1:]
+			queue = temp
+			
+			for _, node := range graph[first] {
+				degree[node] -= 1
+				if degree[node] == 1 {
+					queue = append(queue, node)
+				}
+			}
+			
+			size -= 1
+		}
+	}
+	
+	return queue
+}
+
+
