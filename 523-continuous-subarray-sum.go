@@ -22,19 +22,21 @@ func checkSubarraySum(nums []int, k int) bool {
 // 边界 1: i == 0，则 sum[i-1] = sum[-1] 的前缀和为 0
 
 func checkSubarraySum(nums []int, k int) bool {
+	if k == 0 {
+		for i := 1; i < len(nums); i++ {
+			if nums[i] == nums[i-1] && nums[i] == 0 {
+				return true
+			}
+		}
+		return false
+	}
+	
 	memo := make(map[int]int)
 	memo[0] = -1
 	var sum int
 	for i, num := range nums {
 		sum += num
-		
-		var mod int
-		if k == 0 {
-			mod = sum
-		} else {
-			mod = sum % k    
-		}
-		
+		mod := sum % k    
 		j, exist := memo[mod]
 		if exist {
 			if i - j > 1 {
