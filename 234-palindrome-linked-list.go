@@ -28,3 +28,31 @@ func isPalindrome(head *ListNode) bool {
 	return true
 }
 
+func isPalindrome(head *ListNode) bool {
+	var length int
+	current := head
+	for current != nil {
+		length += 1
+		current = current.Next
+	}
+	
+	var pre *ListNode
+	cur := head
+	for i := 0; i < length / 2; i++ {
+		next := cur.Next
+		cur.Next = pre
+		pre = cur
+		cur = next
+	}
+	if length % 2 != 0 {
+		cur = cur.Next
+	}
+	for pre != nil && cur != nil {
+		if pre.Val != cur.Val {
+			return false
+		}
+		pre, cur = pre.Next, cur.Next
+	}
+	
+	return true
+}
