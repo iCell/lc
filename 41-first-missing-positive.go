@@ -6,9 +6,6 @@ func firstMissingPositive(nums []int) int {
 		}
 		memo[num] = true
 	}
-	if max <= 0 {
-		return 1
-	}
 
 	for i := 1; i <= max + 1; i++ {
 		_, exist := memo[i]
@@ -17,5 +14,5 @@ func firstMissingPositive(nums []int) int {
 		}
 		return i
 	}
-	return -1
+	return 1
 }
