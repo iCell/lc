@@ -4,13 +4,14 @@ func trap(height []int) int {
 	stack := NewStack()
 	for i, num := range height {
 		for !stack.IsEmpty() && num > height[stack.Peek()] {
-			top := stack.Pop()
+			current := stack.Pop()
 			if stack.IsEmpty() {
 				break
 			}
+			// current 左边的值肯定比 current 大
+			// 而 i 对应的值是右边的值，肯定比 current 大
 			left, right := stack.Peek(), i
-			height := min(height[right], height[left]) - height[top]
-
+			height := min(height[right], height[left]) - height[current]
 			ans += (right - left - 1) * height
 		}
 		stack.Push(i)
