@@ -30,6 +30,7 @@ func lowestCommonAncestor(p *Node, q *Node) *Node {
 	pp, pq := p, q
 	for pp != pq {
 		pp, pq = pp.Parent, pq.Parent
+		// 出现这种情况就代表 p 是 q 的 ancestor，或者反过来，此时就让两者强制相等就必定是对的
 		if pp == nil {
 			pp = q
 		}
