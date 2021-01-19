@@ -17,6 +17,11 @@ func divide(dividend int, divisor int) int {
 		positive -= 1
 	}
 	
+	// 比如 21 / 3
+	// 21 - 2^2 * 3 = 9
+	// 9 - 2^1 * 3 = 3
+	// 3 - 2^0 * 3 = 0
+	// 2^2 + 2^1 + 2^0 = 7
 	var quotient int
 	for divisor <= dividend {
 		power, value := 1, divisor
