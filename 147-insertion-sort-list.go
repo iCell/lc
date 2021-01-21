@@ -5,17 +5,24 @@
  *     Next *ListNode
  * }
  */
-
 func insertionSortList(head *ListNode) *ListNode {
-	dummy := &ListNode{}
-	for head != nil {
-		pre, next := dummy, head.Next    
-		for pre.Next != nil && head.Val > pre.Next.Val {
+	dummy, current := &ListNode{}, head
+	
+	for current != nil {
+		pre := dummy
+		
+		for pre.Next != nil && pre.Next.Val < current.Val {
 			pre = pre.Next
 		}
-		head.Next = pre.Next
-		pre.Next = head
-		head = next
+		
+		next := current.Next
+		
+		// insert to new list, between pre and pre.Next
+		current.Next = pre.Next
+		pre.Next = current
+		
+		current = next
 	}
+	
 	return dummy.Next
 }
